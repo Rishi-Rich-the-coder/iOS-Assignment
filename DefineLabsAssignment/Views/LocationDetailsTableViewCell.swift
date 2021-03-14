@@ -8,18 +8,22 @@
 import UIKit
 
 class LocationDetailsTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var titleLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    let unselectedTint = UIColor.lightGray
+    let selectedTint = UIColor.blue
+    
+    func setupCell(selectedVenue: Venue) {
+        let location = selectedVenue.location.city + ", " + selectedVenue.location.country
+        titleLabel.text = selectedVenue.name
+        locationLabel.text = location
+        accessoryType = .checkmark
+        updateCellSelection(with: selectedVenue.isVenueSaved)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    func updateCellSelection(with isVenueSelected: Bool) {
+        tintColor = isVenueSelected ? selectedTint : unselectedTint
     }
-
+    
 }

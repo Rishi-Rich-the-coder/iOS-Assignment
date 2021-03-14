@@ -17,14 +17,11 @@ class MainViewController: UIViewController {
     var allLocations = [Venue]()
     var tableViewData = [Venue]()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLocations()
         networkManager.delegate = self
-        networkManager.performRequest()
-        // network call here.
-        
+        networkManager.performRequest()        
     }
     
     func setupLocations() {
@@ -83,10 +80,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "LocationDetailsTableViewCell") as? LocationDetailsTableViewCell else { return UITableViewCell() }
-        let responseInstance = tableViewData[indexPath.row]
-        cell.titleLabel.text = responseInstance.name
-        cell.accessoryType = .checkmark
-        cell.tintColor = responseInstance.isVenueSaved ? .green : .lightGray
+        cell.setupCell(selectedVenue: tableViewData[indexPath.row])
         return cell
     }
     
@@ -96,7 +90,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let isVenueSelected = !responseInstance.isVenueSaved
         tableViewData[indexPath.row].isVenueSaved = isVenueSelected
         if let cell = tableView.cellForRow(at: indexPath) as? LocationDetailsTableViewCell {
-            cell.tintColor = isVenueSelected ? .green : .lightGray
+            cell.updateCellSelection(with: isVenueSelected)
         }
     }
 }
